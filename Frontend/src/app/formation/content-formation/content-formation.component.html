@@ -1,0 +1,48 @@
+
+
+
+<div class="upload-container">
+  
+  <form *ngIf="userRole === 'formateur'" class="upload-form" (ngSubmit)="uploadFile()" enctype="multipart/form-data">
+    <h1 class="upload-heading">Upload a file</h1>
+    <div class="upload-field">
+      <label for="file" class="upload-label">Choose a file:</label>
+      <input type="file" name="file" id="file" class="upload-input" (change)="onFileSelected($event)" />
+    </div>
+    <button type="submit" class="upload-button" (click)='upload()'>Upload</button>
+  </form>
+  <div *ngIf="uploadedFiles && uploadedFiles.length">
+    <h2>List of uploaded files:</h2>
+    <ul>
+      <li *ngFor="let file of uploadedFiles">
+        <img  src="assets/images/file.png"  height="50" 
+        alt="file.url" alt="{{ file.name }}"  > 
+        <figcaption>{{ file.name }} </figcaption>
+
+
+        <button class="upload-button" (click)="downloadFile(file.name)">Download</button>
+        <!-- <a [routerLink]="['/download', file.fileName]">Télécharger</a> -->
+      </li>
+    </ul>
+  </div>
+  
+</div>
+
+<div class="rating-container">
+  <h3><b>vote for this formation</b> </h3>
+  <div class="rating-stars">
+    <span class="star" (click)="setVote(1)" [class.active]="voteValue === 1">&#9733;</span>
+    <span class="star" (click)="setVote(2)" [class.active]="voteValue === 2">&#9733;</span>
+    <span class="star" (click)="setVote(3)" [class.active]="voteValue === 3">&#9733;</span>
+    <span class="star" (click)="setVote(4)" [class.active]="voteValue === 4">&#9733;</span>
+    <span class="star" (click)="setVote(5)" [class.active]="voteValue === 5">&#9733;</span>
+  </div>
+  <button class="vote-button" (click)="submitVote()">Submit the vote</button>
+  
+</div>
+
+
+
+
+
+

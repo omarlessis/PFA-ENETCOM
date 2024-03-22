@@ -1,0 +1,58 @@
+<body>
+ 
+    <div class="background">
+    <div>
+      <h1 class="saif">Update your question</h1>
+    </div>
+      
+    
+    
+    
+    <div class="question">
+      <form class="example-form">
+        <div class="image">
+      
+      
+      <div class="clear">
+        <img src="https://images.squarespace-cdn.com/content/v1/5ea237e587e03021f9ef8cc2/1591321482139-5N4EC0SIATZQYDTX8I3G/Question-mark.jpg?format=1000w" >
+        <h1 class="title" style="font-family: 'Times New Roman', Times, serif; ">Title</h1>
+        <h4 class="bzt">Give a title to summarize your question</h4>
+      </div>
+     
+        </div>
+       
+    
+    
+        <mat-form-field class="example-full-width"appearance="outline">
+          <mat-label>Title</mat-label>
+         
+          <input matInput placeholder="Ex. Nodejs"[(ngModel)]="question.title" name="title" >
+        </mat-form-field>
+      </form>
+      <form class="example-form1">
+        <h1 style="font-family: 'Times New Roman', Times, serif;">Description</h1>
+        <h4>Describe your question</h4>
+        <mat-form-field class="example-full-width"appearance="outline">
+          <mat-label>Leave a comment</mat-label>
+          <textarea matInput placeholder="Ex. what is node js" [(ngModel)]="question.description" name="description"></textarea>
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" class="button" (click)="update()" >Update</button>
+      <button mat-raised-button color="warn" class="button" (click)="discard()" >Discard changes</button>
+    
+    </div>
+    </div>
+    </body>
+    <!-- -----------------------------------------------------: -->
+    <!-- <form>
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" class="form-control" id="title" name="title" [(ngModel)]="question.title">
+        </div>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea class="form-control" id="description" name="description" [(ngModel)]="question.description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Question</button>
+      </form> -->
+      

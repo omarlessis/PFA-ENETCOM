@@ -1,0 +1,316 @@
+const studentService = require('../service/studentService');
+const studentModel = require('../model/studentModel');
+const permission = require('../model/permissionModel');
+const createStudentControllerFn = async (req, res)=>
+{
+    try
+    {
+        console.log(req.body);
+        const status = await studentService.createStudentDBService(req.body);
+        console.log(status);
+
+        if(status){
+            res.send({"status":true,"message":"User created successfully"});
+        } else{
+            res.send({"status":false,"message":"error creating user"});
+        }
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
+    
+}
+
+
+
+
+
+
+var jwt = require('jsonwebtoken');
+
+
+const secretKey = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxMTEzNDU4MCwiaWF0IjoxNzExMTM0NTgwfQ.PtCXJxjm_1AZZDR2icm70HeRa-Cv21VaIpo-xf9tPrM";
+
+
+const loginStudentControllerFn = async (req, res) => {
+  try {
+    const result = await studentService.loginStudentDBService(req.body);
+    
+    if (result.status) {
+      const user = await studentModel.findOne({ email: req.body.email });
+      
+      if (!user) {
+        return res.status(404).json({ status: false, message: 'User not found' });
+      }
+
+      const permissions = await permission.findOne({ role: user.role });
+
+      // If permissions object is null, set permissionsData to an empty array
+      const permissionsData = permissions ? permissions.permissions : [];
+
+      const token = jwt.sign({ id: user.id, role: user.role }, secretKey);
+
+      let welcomeMessage = '';
+      if (user.role === 'admin') {
+        welcomeMessage = 'Bienvenue Admin';
+      } else if (user.role === 'candidat') {
+        welcomeMessage = 'Bienvenue Candidat';
+      } else if (user.role === 'formateur') {
+        welcomeMessage = 'Bienvenue Formateur';
+      } else {
+        welcomeMessage = 'Rôle utilisateur inconnu';
+      }
+
+      res.send({ status: true, message: welcomeMessage, token: token, id: user.id, permissions: permissionsData });
+    } else {
+      res.send({ status: false, message: result.msg });
+    }
+  } catch (error) {
+    console.error(error);
+    res.send({ status: false, message: error.message });
+  }
+};
+
+
+
+
+const logout = async (req, res) => {
+  try {
+      return res.status(200).clearCookie('token', { httpOnly: true }).json({
+      success: true,
+      message: 'Logged out succefully',
+      })
+  }catch (error) {
+      console.log(error.message)
+      return res.status(500).json({
+      error: error.message,
+      })
+  }
+}
+
+var logoutControllerFn = async (req, res) => {
+  try {
+    // Clear the user's authentication token from the client-side
+    res.clearCookie('authToken');
+    
+    // Send a success response
+    res.send({ status: true, message: 'User successfully logged out' });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, message: error.message });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+var getStudent=async (req,res)=>{
+    try {
+  
+        console.log('Getting students...');
+        const students = await studentModel.find(); //find(role:'condidat')
+        
+        console.log('Students:', students);
+        res.json(students);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+}
+
+
+var getStudentById=async (req, res) => {    
+  try {
+    console.log('Getting student...');
+    const userid =req.params.idStudent
+    const student = await studentModel.findById(userid); 
+    
+    console.log('Students:', student);
+    res.json(student);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+const deleteStudentController = async (req, res, next) => {
+  const studentId = req.params.idStudent;
+
+  try {
+    const student = await studentModel.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ error: "utilisateur non trouvée." });
+    }
+
+    const result = await studentModel.findByIdAndDelete(studentId);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'utilisateur : ", error);
+    res.status(500).json({ error: "Impossible de supprimer l'utilisateur'." });
+  }
+};
+const updateStudentControllerFn = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateDetails = req.body;
+
+    const result = await studentService.updateStudentDBService(id, updateDetails);
+
+    if (result) {
+      res.send({ "status": true, "message": "user est mis à jour avec succès", "data": result });
+    } else {
+      res.send({ "status": false, "message": "erreur lors de la mise à jour d'un user'" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const { getPermissions } = require('./permissionController');
+
+const app = express();
+app.use(cors());
+
+
+
+const storage = multer.diskStorage({  
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // dossier de destination pour les fichiers téléchargés
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname) // nom du fichier d'origine
+  }
+});
+const upload = multer({ storage: storage });
+const File = require('../model/fileModel');
+// middleware pour télécharger un seul fichier
+const uploadControllerFn = (req, res) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).send('Une erreur s\'est produite lors du téléchargement du fichier');
+    }
+
+    if (!req.file) {
+      return res.status(400).send('Aucun fichier n\'a été téléchargé');
+    }
+
+    console.log('Received file:', req.file);
+
+    // Enregistrer les informations du fichier dans la base de données
+    const file = new File({
+      name: req.file.originalname,
+      type: req.file.mimetype,
+      size: req.file.size,
+      path: req.file.path,
+      formation: req.params.idformation,
+    });
+    file.save()
+      .then(() => {
+        res.send({
+          message: 'Le fichier a été téléchargé avec succès',
+          filename: req.file.originalname,
+          path: req.file.path
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(500).send('Une erreur s\'est produite lors de la sauvegarde du fichier dans la base de données');
+      });
+  });
+};
+
+const getFilesControllerFn =async (req, res) => {
+  try {
+   
+    console.log('Getting files...');
+    const fileid =req.params.idformation
+    // const files = await File.find(); 
+    
+    const files =  await File.find({ formation: fileid });
+    console.log(fileid)
+    console.log('files:', files);
+    res.json(files);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+ 
+const path = require('path');
+const fs = require('fs');
+
+// Fonction pour gérer les demandes de téléchargement de fichiers
+const downloadControllerFn = async (req, res) => {
+  const fileName = req.params.filename;
+
+  try {
+    // Rechercher l'enregistrement correspondant dans la base de données en utilisant le nom de fichier
+    const file = await File.findOne({ name: fileName });
+
+    if (!file) {
+      return res.status(404).send('Fichier non trouvé');
+    }
+
+    const filePath = file.path; // Récupérer le chemin de stockage à partir de la base de données
+
+    const stat = fs.statSync(filePath); // Obtenir les statistiques du fichier pour la taille de contenu
+
+    // Définit les en-têtes de réponse pour indiquer le type et le nom du fichier, et la taille du contenu
+    res.set({
+      'Content-Type': 'application/octet-stream', // Type de fichier binaire générique
+      'Content-Disposition': `attachment; filename=${fileName}`, // Définit le nom de fichier pour le téléchargement
+      'Content-Length': stat.size // Définit la taille de contenu pour éviter des téléchargements incomplets
+    });
+
+    // Diffuse le contenu du fichier vers l'objet de réponse
+    const stream = fs.createReadStream(filePath);
+    stream.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+
+
+
+
+//  const checkPermissions=(role, action)=> {
+//   return (req, res, next) => {
+//     Permission.findOne({ role })
+//       .then((permission) => {
+//         if (!permission) {
+//           return res.status(403).json({ message: 'Forbidden' });
+//         }
+//         const allowed = permission.actions.find((a) => a.action === action)?.permission;
+//         if (!allowed) {
+//           return res.status(403).json({ message: 'Forbidden' });
+//         }
+//         return next();
+//       })
+//       .catch((err) => {
+//         return res.status(500).json({ message: err.message });
+//       });
+//   };
+// }
+  
+
+
+
+
+
+
+
+
+module.exports = {createStudentControllerFn,loginStudentControllerFn,getStudent,deleteStudentController,updateStudentControllerFn,logoutControllerFn,logout,uploadControllerFn,getStudentById,downloadControllerFn,getFilesControllerFn};

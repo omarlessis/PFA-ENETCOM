@@ -1,0 +1,225 @@
+var express =require('express')
+// const formationModel = require('../src/model/formationModel');
+const formationController=require('../src/controller/formationController');
+var studentController = require('../src/controller/studentController');
+var questionController = require('../src/controller/questionController');
+var quizzController = require('../src/controller/quizzController');
+const studentModel = require('../src/model/studentModel');
+const router =express.Router();
+const multer  = require('multer');
+// var inscriptionModel=require('../model/userFormationModel');
+var inscriptionController = require('../src/controller/userFormationController');
+var reponseController = require('../src/controller/reponseController');
+var voteController = require('../src/controller/voteController');
+const PermissionController = require('../src/controller/permissionController');
+const {checkPermissions}= require ('../src/middleware/checkPermissions');
+const verifyToken = require('../src/middleware/verifyToken');
+
+
+router.route('/student/login').post(studentController.loginStudentControllerFn);
+router.post('/student/create', studentController.createStudentControllerFn);
+
+router.route('/students').get(verifyToken.authenticateToken, studentController.getStudent);
+// verifyToken.authenticateToken
+router.route('/students/:idStudent').get(verifyToken.authenticateToken, studentController.getStudentById);
+
+router.route('/students/:idStudent').delete(studentController.deleteStudentController);
+
+router.route('/students/:id').put(studentController.updateStudentControllerFn);
+router.route("/students/logout").post(studentController.logoutControllerFn);
+// ----------------------------------------
+router.route('/formation/create').post(formationController.createFormationControllerFn);
+router.delete('/formation/:id', formationController.deleteFormationController);
+router.put('/formation/:idformation', formationController.updateFormationControllerFn);
+// -------------------------------------------------
+router.route('/upload/:idformation').post(studentController.uploadControllerFn);
+router.get('/files/:idformation', studentController.getFilesControllerFn);
+
+router.get('/download/:filename',studentController.downloadControllerFn);
+// app.get('/download/:filename',
+router.route('/formations').get( verifyToken.authenticateToken, formationController.getFormation);
+
+// ---------------------------
+router.route('/question/create').post(questionController.createQuestionControllerFn);
+router.put('/question/:idquestion', questionController.updateQuestionControllerFn);
+router.delete('/question/:id', questionController.deleteQuestionController);
+router.route('/questions').get(questionController.getAllQuestion);
+router.route('/question/:idQuestion').get(questionController.getQuestion);
+
+// ------------------------------
+router.route('/reponse/create').post(reponseController.createReponseControllerFn);
+router.put('/reponse/:idreponse', reponseController.updateReponseControllerFn);
+router.delete('/reponse/:id', reponseController.deleteReponseController);
+router.route('/reponses').get(reponseController.getAllReponse);
+router.route('/reponse/:idReponse').get(reponseController.getReponse);
+// -------------------------------------
+router.route('/inscription/create').post(inscriptionController.createInscriptionControllerFn );
+router.route('/inscriptions').get(inscriptionController.getAllInscriptions);
+
+// ------------------------------------------------------------------------------
+router.route('/quizz/create').post(quizzController.createQuizz);
+router.route('/quizz/:idQuizz').get(quizzController.getQuizz);
+// -----------------------------------------------------------------------------------
+router.route('/votes/create').post(voteController.createVoteControllerFn );
+
+// --------------------------------------------
+// router.route('/permissions').get(PermissionController.getPermissions);
+
+
+
+
+const formationModel = require('../src/model/formationModel');
+// Route pour obtenir les statistiques
+router.get('/stats', async (req, res) => {
+  try {
+    // Compter le nombre d'utilisateurs
+    const count = await studentModel.countDocuments();
+    const nb = await formationModel.countDocuments();
+    res.json({ count ,nb});
+   
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+const UserFormationModel = require('../src/model/userFormation');
+// Route pour obtenir les statistiques des formations par utilisateur
+router.get('/stats/inscrit', async (req, res) => {
+  try {
+    const result = await UserFormationModel.aggregate([
+      {
+        $unwind: "$formation"
+      },
+      {
+        $group: {
+          _id: "$formation",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $lookup: {
+          from: "formations", // Nom de la collection des formations
+          localField: "_id",
+          foreignField: "_id",
+          as: "formationData"
+        }
+      },
+      {
+        $project: {
+          formationId: "$_id",
+          count: 1,
+          formationName: {
+            $arrayElemAt: ["$formationData.nameFormation", 0]
+          },
+          _id: 0
+        }
+      }
+    ]).exec();
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Une erreur est survenue lors de la récupération des statistiques.' });
+  }
+});
+
+
+module.exports = router;
+
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+
+// Configuration de multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // dossier de destination pour les fichiers téléchargés
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname) // nom du fichier d'origine
+  }
+});
+const upload = multer({ storage: storage });
+
+
+
+
+
+// -------------------------------------------------
+
+const UserFormation = require('../src/model/userFormation');
+
+// GET user formation by user ID
+router.get('/:userId/:formationId', (req, res) => {
+  const userId = req.params.userId;
+  const formationId = req.params.formationId;
+
+  UserFormation.findOne({ user: userId, formation: formationId })
+    .then((userFormation) => {
+      if (userFormation) {
+        res.json({ message: 'User already registered in this formation' });
+      } else {
+        res.json({ message: 'User is not registered in this formation' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ message: 'Error checking user registration' });
+    });
+});
+
+  
+
+
+
+
+
+const Vote = require('../src/model/voteModel');
+const Formation = require('../src/model/formationModel');
+const Student = require('../src/model/studentModel');
+
+// Endpoint pour créer un vote pour une formation
+router.post('/votes', async (req, res) => {
+  try {
+    const { formationId, userId, voteValue } = req.body;
+
+    // Vérifier si la formation existe
+    const formation = await Formation.findById(formationId);
+    if (!formation) {
+      return res.status(404).json({ message: 'Formation not found' });
+    }
+
+    // Vérifier si l'utilisateur existe
+    const user = await Student.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Vérifier si l'utilisateur a déjà voté pour cette formation
+    const existingVote = await Vote.findOne({ formation: formationId, user: userId });
+    if (existingVote) {
+      return res.status(400).json({ message: 'User has already voted for this formation' });
+    }
+
+    // Créer le vote
+    const vote = new Vote({
+      formation: formationId,
+      user: userId,
+      vote: voteValue,
+    });
+
+    // Enregistrer le vote dans la base de données
+    await vote.save();
+
+    res.status(201).json({ message: 'Vote created successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+module.exports = router;
+
+

@@ -1,0 +1,19 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  

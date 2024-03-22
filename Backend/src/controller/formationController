@@ -1,0 +1,79 @@
+
+const formationModel = require('../model/formationModel');
+const formationService = require('../service/formationService');
+
+
+
+const createFormationControllerFn = async (req, res)=>
+{
+    try
+    {
+        console.log(req.body);
+        const status = await formationService.createFormationDBService(req.body);
+        console.log(status);
+
+        if(status){
+            res.send({"status":true,"message":"formation created successfully"});
+        } else{
+            res.send({"status":false,"message":"error creating formation"});
+        }
+    }
+    catch(err)
+    {
+        console.log(err);
+    }
+    
+}
+
+const updateFormationControllerFn = async (req, res) => {
+  try {
+    const id = req.params.idformation;
+    const updateDetails = req.body;
+
+    const result = await formationService.updateFormationDBService(id, updateDetails);
+
+    if (result) {
+      res.send({ "status": true, "message": "formation mise à jour avec succès", "data": result });
+    } else {
+      res.send({ "status": false, "message": "erreur lors de la mise à jour de la formation" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const deleteFormationController = async (req, res, next) => {
+    const formationId = req.params.id;
+  
+    try {
+      const formation = await formationModel.findById(formationId);
+      if (!formation) {
+        return res.status(404).json({ error: "Formation non trouvée." });
+      }
+  
+      const result = await formationModel.findByIdAndDelete(formationId);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la formation : ", error);
+      res.status(500).json({ error: "Impossible de supprimer la formation." });
+    }
+  };
+  var getFormation=async (req,res)=>{
+    try {
+        console.log('Getting formation...');
+        const formations = await formationModel.find(); //find(role:'condidat')
+        
+        console.log('Formations:', formations);
+        res.json(formations);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+}
+  
+
+
+
+
+
+module.exports ={createFormationControllerFn,updateFormationControllerFn,deleteFormationController,getFormation};

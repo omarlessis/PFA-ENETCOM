@@ -1,0 +1,29 @@
+/* #chart {
+    max-width: 380px;
+    margin: 35px auto;
+    padding: 0;
+  } */
+
+  .circle-container {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    height: 40vh
+  }
+  .centered-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Ajustez selon votre besoin */
+  }
+  
+  .with-border {
+    border: 1px solid #cccccc; /* Couleur de la bordure et épaisseur */
+    border-radius: 8px; /* Rayon de bordure */
+  }
+  
+  .with-shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
+    padding: 20px; /* Espacement interne */
+  }
+  

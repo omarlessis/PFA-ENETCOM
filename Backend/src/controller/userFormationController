@@ -1,0 +1,48 @@
+const inscriptionModel = require('../model/userFormation');
+const inscriptionService = require('../service/userFormationService');
+const StudentModel = require('../model/studentModel'); 
+const FormationModel = require('../model/formationModel'); 
+
+
+
+const createInscriptionControllerFn = async (req, res) => {
+    try {
+      console.log(req.body);
+      const status = await inscriptionService.createInscriptionDBService(req.body);
+      console.log(status);
+  
+      if (status) {
+        res.send({ "status": true, "message": "formation created successfully" });
+      } else {
+        res.send({ "status": false, "message": "error creating formation" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(err.status || 500).send({ message: err.message });
+    }
+  }
+  
+  var getAllInscriptions=async (req,res)=>{
+    try {
+        
+        console.log('Getting reponse...');
+        const inscriptions = await inscriptionModel.find()  .populate({
+          path: 'user',
+          model: StudentModel,
+          select: 'firstname lastname', // Sélectionnez uniquement le champ "name" de l'utilisateur
+        })
+        .populate({
+          path: 'formation',
+          model: FormationModel,
+          select: 'nameFormation', // Sélectionnez uniquement le champ "name" de la formation
+        });
+        
+        console.log('inscriptions:', inscriptions);
+        res.json(inscriptions);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      }
+}
+
+module.exports ={createInscriptionControllerFn,getAllInscriptions};

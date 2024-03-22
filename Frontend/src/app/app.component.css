@@ -1,0 +1,16 @@
+.example-container {
+    width: auto;
+    height: auto;
+    margin: 500px;
+    /* border: 1px solid #555; */
+  }
+  .content {
+    position: absolute;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    left: 200px;
+    overflow: auto;
+}
+
+  

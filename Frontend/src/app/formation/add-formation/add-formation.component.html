@@ -1,0 +1,44 @@
+<div mat-dialog-title>
+    <h1>ADD FORMATION</h1>
+</div>
+<!-- <form [formGroup]="userForm" (ngSubmit)="onsubmit()"> -->
+<div mat-dialog-content class="content">
+    <div class="saif">
+    <mat-form-field appearance="outline">
+        <mat-label>Formation name</mat-label>
+        <input matInput type="text" placeholder="firstname" [(ngModel)]="nameFormation">
+      </mat-form-field> 
+      <mat-form-field appearance="outline">
+        <mat-label>Formateur name</mat-label>
+        <input matInput placeholder="lastname" [(ngModel)]="nameFormateur">
+      </mat-form-field> 
+    </div>
+
+    <div class="saif">
+      <mat-form-field appearance="outline">
+        <mat-label>started at</mat-label>
+        <input matInput type="date"  placeholder="password" [(ngModel)]="dateAjout">
+      </mat-form-field> 
+        <mat-form-field appearance="outline">
+            <mat-label>ended at</mat-label>
+            <input matInput type="date" placeholder="phoneNumber"[(ngModel)]="dateFin">
+        </mat-form-field> 
+         
+    </div>
+        <div class="saif">
+
+            <mat-form-field appearance="outline">
+                <mat-label>image adress</mat-label>
+                <input matInput type="email" placeholder="image adress here" [(ngModel)]="picture">
+              </mat-form-field>       
+              <mat-form-field appearance="outline">
+                <mat-label>description of the formation</mat-label>
+                <textarea matInput placeholder="select role" [(ngModel)]="description"></textarea>
+              </mat-form-field>
+        </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close="false">Cancel</button>
+    <button mat-raised-button color="primary"(click)="save()" >SAVE</button>
+</div>
+<!-- </form> -->

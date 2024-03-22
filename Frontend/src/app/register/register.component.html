@@ -1,0 +1,110 @@
+
+<!-- <body>
+    <img src="assets/images/aziz.png">
+    <div class="card">
+        <h1>S’inscrire</h1>
+        <form>
+        <div class="form-group">
+            <label>Nom</label>
+            <input type="text" [(ngModel)]="firstname" [ngModelOptions]="{standalone: true}" class="form-control" id="nom" placeholder="nom">
+        </div>
+        <div class="form-group">
+            <label>Prénom</label>
+            <input type="text" [(ngModel)]="lastname" [ngModelOptions]="{standalone: true}" class="form-control" id="nom" placeholder="prénom">
+        </div>
+        <div class="form-group">
+            <label>email</label>
+            <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" id="course" placeholder="tapez votre email">
+        </div>
+        <div class="form-group">
+            <label>password</label>
+            <input type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" id="fee" placeholder="votre mot de passe">
+        </div>
+
+
+        
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="submit" class="btn btn-primary mt-4" (click)="save()"> s'inscrire</button>
+          </div>
+        </form> 
+    </div>   
+</body> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="register.component.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    
+
+</head>
+<body>
+    <!-- <form #g="ngForm" (ngSubmit)="register(g) " ></form> -->
+   <div class="box">
+    <div class="container">
+
+        <div class="top">
+            <span>Have an account?</span>
+            <header>S'inscrire</header>
+        </div>
+        <form #f="ngForm" (ngSubmit)="save()">
+        <div class="input-field">
+            <!-- <input type="Password" class="input" placeholder="Password" id=""> -->
+           
+            <i class='bx bx-user'></i>
+            <input type="text" [(ngModel)]="firstname" [ngModelOptions]="{standalone: true}" class="input" id="" placeholder="prénom" required>
+        </div>
+        <div class="input-field">
+            <!-- <input type="Password" class="input" placeholder="Password" id=""> -->
+           
+            <i class='bx bx-user'></i>
+            <input type="text" [(ngModel)]="lastname" [ngModelOptions]="{standalone: true}" class="input" id="" placeholder="nom" required>
+        </div>
+
+        <div class="input-field">            
+            <i class='bx bx-mail-send' ></i>
+            <input type="email" [(ngModel)]="email" #emai="ngModel" [ngModelOptions]="{standalone: true}" class="input" id="" placeholder="tapez votre email" ngModel required email aria-label="Not clickable icon">
+            <p class="alert alert-danger"  *ngIf="emai.errors?.['required'] && emai.touched">this input is required</p>
+            <p class="alert alert-danger" *ngIf="emai.errors?.['email'] && emai.touched">this input should be an email </p>
+        </div>
+
+        <div class="input-field">
+            <!-- <input type="Password" class="input" placeholder="Password" id=""> -->
+
+            <i class='bx bx-lock-alt'></i>
+            <input type="password" [(ngModel)]="password" #pass="ngModel" [ngModelOptions]="{standalone: true}" class="input" id="" placeholder="votre mot de passe" ngModel required minlength="8" aria-label="Not clickable icon">
+            <p class="alert alert-danger" *ngIf="pass.errors?.['required'] && pass.touched">this password is required</p>
+    <p class="alert alert-danger" *ngIf="pass.errors?.['minlength'] && pass.touched">this password should be +8 caracter</p>
+        </div>
+        <div class="input-field">
+            <i class='bx bx-lock-alt'></i>
+            <input type="text" [(ngModel)]="role" [ngModelOptions]="{standalone: true}" class="input" id="" placeholder="role">
+        </div>
+        <div class="input-field">
+            <i class='bx bx-lock-alt'></i>
+            <input type="number" [(ngModel)]="phoneNumber" [ngModelOptions]="{standalone: true}" class="input" id="" placeholder="numéro de télephone">
+        </div>
+
+        <div class="input-field">
+            <input type="submit" class="submit" value="S'inscrire" id="" (click)="save()" [disabled]="f.invalid">
+        </div>
+    </form>
+        <div class="two-col">
+            <div class="two">
+                <label><a href="">retour à la page Login ? </a></label>
+            </div>
+        </div>
+        
+    </div>
+</div>  
+<!-- </form> -->
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+body {
+  font-family: 'Roboto', sans-serif;
+}
+body {
+    background-image: url('your-image-url.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .msgContainer {
+    background-color: #fff;
+  }
+  .message {
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 10px;
+    max-width: 45%;
+  }
+  
+  .newMessageMe {
+    background-color: #00c5cd;
+    color: #fff;
+    margin-left: 55%;
+    margin-top: 2%;
+  }
+  
+  .newMessageAll {
+    background-color: #e6e6e6;
+    margin-top: 2%;
+  }
+  
+  .whisper {
+    background-color: #f08080;
+    margin-top: 2%;
+    color: #fff;
+  }
+  
+  .oldMessages {
+    background-color: #e6e6e6;
+    margin-top: 2%;
+  }
+  
+  .oldWhispers {
+    background-color: #f08080;
+    margin-top: 2%;
+    color: #fff;
+  }
+      

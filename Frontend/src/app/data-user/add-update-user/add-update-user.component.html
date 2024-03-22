@@ -1,0 +1,47 @@
+<div mat-dialog-title>
+    <h1>ADD USER</h1>
+</div>
+<!-- <form [formGroup]="userForm" (ngSubmit)="onsubmit()"> -->
+<div mat-dialog-content class="content">
+    <div class="saif">
+    <mat-form-field appearance="outline">
+        <mat-label>first name</mat-label>
+        <input matInput type="text" placeholder="firstname" [(ngModel)]="firstname">
+      </mat-form-field> 
+      <mat-form-field appearance="outline">
+        <mat-label>last name</mat-label>
+        <input matInput placeholder="lastname" [(ngModel)]="lastname">
+      </mat-form-field> 
+    </div>
+
+    <div class="saif">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" placeholder="example@gmail.com" [(ngModel)]="email">
+          </mat-form-field> 
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput type="password"  placeholder="password" [(ngModel)]="password">
+          </mat-form-field> 
+        </div>
+        <div class="saif">
+            <mat-form-field appearance="outline">
+                <mat-label>phone Number</mat-label>
+                <input matInput type="number" placeholder="phoneNumber"[(ngModel)]="phoneNumber">
+            </mat-form-field> 
+        
+            <mat-form-field appearance="outline">
+                <mat-label>role</mat-label>
+                <mat-select placeholder="select role" [(ngModel)]="role">
+                    <mat-option value="candidat">Candidat</mat-option>
+                    <mat-option value="formateur">Formateur</mat-option>  
+                    <mat-option value="admin">Admin</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close="false">Cancel</button>
+    <button mat-raised-button color="primary" (click)="save()">{{data?'Update':'Save'}}</button>
+</div>
+<!-- </form> -->

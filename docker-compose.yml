@@ -1,0 +1,46 @@
+version: '3.5'
+
+services:
+  # Frontend service configuration
+  frontend:
+    container_name: ng_frontend
+    build: ./Frontend                        # Path to frontend Dockerfile
+    ports:
+      - 4200:4200                           # Map host port 3000 to container port 3000
+    platform: linux/x86_64                  # Platform specification
+    working_dir: /app-frontend              # Working directory inside the container
+    depends_on:
+      backend:
+        condition: service_healthy         # Wait for backend service to be healthy
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4200   # Set environment variable for frontend
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3000"]   # Health check command
+      timeout: 10s                              # Health check timeout
+      retries: 5                                # Number of health check retries
+
+  # Backend service configuration
+  backend:
+    container_name: ng_backend
+    build: ./Backend                         # Path to backend Dockerfile
+    ports:
+      - 9000:9000                           # Map host port 3001 to container port 3001
+    platform: linux/x86_64                  # Platform specification
+    working_dir: /app-backend               # Working directory inside the container
+    depends_on:
+      db:
+        condition: service_healthy         # Wait for database service to be healthy
+    environment:
+      - APP_PORT=3001
+      - JWT_SECRET=jwt_secret
+      - DB_USER=postgres
+      - DB_PASS=123456
+      - DB_HOST=db
+      - DB_PORT=5432                        # Set environment variables for backend
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3001"]   # Health check command
+      timeout: 10s                              # Health check timeout
+      retries: 5                                # Number of health check retries
+
+  # Database service (not present in provided file)
+  # Add database service configuration if applicable
