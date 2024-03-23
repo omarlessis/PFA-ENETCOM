@@ -1,0 +1,83 @@
+
+.example-form {
+  margin-top: 50px;
+  margin-left: 20px;
+  min-width: 150px;
+  max-width: 950px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.example-form1 {
+  margin-top: 10px;
+  margin-left: 20px;
+  min-width: 150px;
+  max-width: 950px;
+  width: 100%;
+}
+.example-form1 textarea {
+  height: 100px;
+}
+.question{
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+  border-radius: 5px;
+  /* margin-top: 20px; */
+  margin-left: 20px;
+  margin-right: 250px;
+  margin-bottom: 50px;
+  border: 1px solid gray;
+}
+.button{
+  /* margin-left: 500px; */
+  display: flex;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+.saif{
+  font-family: 'Times New Roman', Times, serif;
+  margin-top: 50px;
+  margin-left: 25px;
+
+  /* text-align: center; */
+}
+.aziz{
+ 
+  height: 60px;
+}
+.image img{
+  width: 150px;
+  float:right;
+  height: 70px;
+}
+
+.question h4{
+  margin-bottom: 3px;
+  margin-left: 7px;
+  color: gray;
+}
+.example-form1 h1{
+  margin-bottom: 3px;
+  margin-left: 5px;
+}
+.clear{
+  clear: both;
+}
+.title{
+  margin-bottom: 3px;
+margin-left: 5px;
+padding-top: 10px;
+}
+.background{
+  margin-top: 0px;
+  padding-top: 0px;
+  height: 1000px;
+/* background-color: black; */
+  
+  /* background-color: black; */
+  /* background-image: url("https://www.nicepng.com/png/detail/78-784591_question-mark-png-transparent-question-marks-transparent-background.png?fbclid=IwAR0yiPdX6x9d5PUa2UyQEHbTt1nGXRyqIjPBVLoAf--ReM_H2601fQ0I0wY"); */
+}
+

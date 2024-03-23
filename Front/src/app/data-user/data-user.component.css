@@ -1,0 +1,31 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+ 
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+ 
+   
+  
+  .mat-elevation-z8{
+    width: 90%;
+    margin-left: 50px;
+  }
+  .filter{
+    margin-left: 50px;
+  }
+
+  .addUser{
+  margin-left: 1100px;
+  margin-top: 10px;
+  position: absolute;
+}
+  
+.material{
+  width: 90%;
+  margin-left: 50px; 
+}

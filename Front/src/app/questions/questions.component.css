@@ -1,0 +1,154 @@
+/* .question-card {
+    border: 1px solid #ccc;
+  }
+  .question-card {
+    margin-bottom: 20px;
+  }
+  
+  .author-role {
+    margin-left: 10px;
+    font-style: italic;
+    font-size: 14px;
+    color: #888;
+  } */
+
+
+
+
+.question-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 20px;
+}
+
+.question-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  width: 100%;
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.question-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.question-meta {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.question-author {
+  font-weight: bold;
+}
+
+.question-author svg {
+  height: 20px;
+}
+
+.question-role {
+  color: #aaa;
+}
+
+.question-content {
+  width: 900px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 5px #888;
+  padding: 10px;
+}
+.question-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.question-description {
+  font-family :'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  padding-top: 10px;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: #333;
+  padding-left: 15px;
+}
+
+
+.question-edit {
+  background-color: #1e88e5;
+  color: #fff;
+}
+
+.question-delete {
+  background-color: #e53935;
+  color: #fff;
+}
+.reponse-description {
+  padding-left: 10px;
+}
+.reponse-content{
+  margin-bottom: 1rem;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 5px #888;
+  padding: 10px;
+}
+
+.reponse-content svg{
+  height: 10px;
+  margin-right: 10px;
+}
+.question-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.textfield{
+  width: 500px;
+  margin-top: 10px;
+}
+.question-and-answer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.question-votes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.question-downvote {
+  margin-top: 8px;
+}
+/* .addreponse {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .addreponse:hover {
+    background-color: #3e8e41;
+  } */
