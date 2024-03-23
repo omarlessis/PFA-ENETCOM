@@ -1,0 +1,68 @@
+const express = require('express');
+const router = express.Router();
+const Vote = require('../model/voteModel');
+const Formation = require('../model/formationModel');
+const Student = require('../model/studentModel');
+const voteService = require('../service/voteService');
+
+createVoteControllerFn= async (req, res) => {
+  try {
+    const { formationId, userId, voteValue } = req.body;
+
+    // Vérifier si la formation existe
+    const formation = await Formation.findById(formationId);
+    if (!formation) {
+      return res.status(404).json({ message: 'Formation not found' });
+    }
+
+    // Vérifier si l'utilisateur existe
+    const user = await Student.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Vérifier si l'utilisateur a déjà voté pour cette formation
+    const existingVote = await Vote.findOne({ formation: formationId, user: userId });
+    if (existingVote) {
+      return res.status(400).json({ message: 'User has already voted for this formation' });
+    }
+
+    const voteDetails = {
+        formation: formationId,
+        user: userId,
+        vote: voteValue,
+      };
+    
+  
+
+    const status = await voteService.voteDBService(voteDetails);
+    console.log(status);
+
+    if (status) {
+      res.send({ "status": true, "message": "formation created successfully" });
+    } else {
+      res.send({ "status": false, "message": "error creating formation" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const createInscriptionControllerFn = async (req, res) => {
+    try {
+      console.log(req.body);
+      const status = await inscriptionService.createInscriptionDBService(req.body);
+      console.log(status);
+  
+      if (status) {
+        res.send({ "status": true, "message": "formation created successfully" });
+      } else {
+        res.send({ "status": false, "message": "error creating formation" });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(err.status || 500).send({ message: err.message });
+    }
+  }
+module.exports ={createVoteControllerFn};
