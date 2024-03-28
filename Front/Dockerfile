@@ -11,13 +11,13 @@ COPY package.json package-lock.json ./
 RUN npm install -g @angular/cli
 
 # Install dependencies
-RUN npm install
+RUN npm install --force
 
 # Copy the rest of the application code to container
 COPY . .
 
 # Build the Angular app for production
-RUN npm run build
+RUN npm run build --prod
 
 # Command to run the Angular development server
 CMD ["npm", "start"]
