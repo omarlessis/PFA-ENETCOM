@@ -5,7 +5,7 @@ FROM node:14
 WORKDIR /app-frontend
 
 # Copy package.json and package-lock.json to container
-COPY . .
+COPY package.json package-lock.json ./
 
 # Install Angular CLI globally
 RUN npm install -g @angular/cli
@@ -19,7 +19,5 @@ COPY . .
 # Build the Angular app for production
 RUN npm run build
 
-
-
 # Command to run the Angular development server
-CMD ["npm","start"]
+CMD ["npm", "start"]
