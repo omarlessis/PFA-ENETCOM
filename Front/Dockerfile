@@ -14,7 +14,7 @@ RUN npm install --force
 COPY . .
 
 # Étape 6 : Construire l'application Angular
-RUN npm run build
+RUN npm run build --force
 
 # Étape 7 : Utiliser l'image NGINX officielle comme image de production
 FROM nginx:alpine
