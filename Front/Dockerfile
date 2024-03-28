@@ -17,7 +17,7 @@ RUN npm install --force
 COPY . .
 
 # Build the Angular app for production
-RUN npm run build --prod
+RUN npm run build
 
 # Command to run the Angular development server
 CMD ["npm", "start"]
