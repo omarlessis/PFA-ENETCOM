@@ -13,17 +13,20 @@ RUN npm install --force
 # Étape 5 : Copier le reste des fichiers de l'application
 COPY . .
 
-# Étape 6 : Construire l'application Angular
+# Étape 6 : Définir le script de build dans le package.json
+RUN echo "{\"scripts\":{\"build\":\"ng build\"}}" > package.json
+
+# Étape 7 : Construire l'application Angular
 RUN npm run build --force
 
-# Étape 7 : Utiliser l'image NGINX officielle comme image de production
+# Étape 8 : Utiliser l'image NGINX officielle comme image de production
 FROM nginx:alpine
 
-# Étape 8 : Copier les fichiers de construction de l'application Angular dans le dossier NGINX
+# Étape 9 : Copier les fichiers de construction de l'application Angular dans le dossier NGINX
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Étape 9 : Exposer le port 80
+# Étape 10 : Exposer le port 80
 EXPOSE 80
 
-# Étape 10 : Commande de démarrage pour exécuter NGINX dans le conteneur
+# Étape 11 : Commande de démarrage pour exécuter NGINX dans le conteneur
 CMD ["nginx", "-g", "daemon off;"]
