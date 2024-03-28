@@ -33,10 +33,8 @@ services:
     environment:
       - APP_PORT=3001
       - JWT_SECRET=jwt_secret
-      - DB_USER=postgres
-      - DB_PASS=123456
-      - DB_HOST=db
-      - DB_PORT=5432                        # Set environment variables for backend
+      - MONGODB_URI=mongodb+srv://root:root@cluster0.bdozs6y.mongodb.net/pfa?retryWrites=true&w=majority
+                      # Set environment variables for backend
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3001"]   # Health check command
       timeout: 10s                              # Health check timeout
