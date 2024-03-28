@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth-service.service';
 // import { UserService } from 'src/app/services/user.service';
 @Injectable()
 export class PdfInterceptor implements HttpInterceptor {
-  private url: string = environment.url;
+  public url: string = environment.url;
   activeRequests = 0;
   skipUrls = [];
   constructor(private authService:AuthService) {}
