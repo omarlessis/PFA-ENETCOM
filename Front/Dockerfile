@@ -19,6 +19,5 @@ RUN echo "{\"scripts\":{\"build\":\"ng build\"}}" > package.json
 # Étape 7 : Construire l'application Angular
 RUN npm run build --force
 
-# Étape 8 : Utiliser l'image NGINX officielle comme image de production
-RUN npm start
+
 
