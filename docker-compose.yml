@@ -1,44 +1,34 @@
-version: '3.5'
+version: '3'
 
 services:
   # Frontend service configuration
   frontend:
     container_name: ng_frontend
-    build: ./Frontend                        # Path to frontend Dockerfile
+    build: ./Frontend
     ports:
-      - 4200:4200                           # Map host port 3000 to container port 3000
-    platform: linux/x86_64                  # Platform specification
-    working_dir: /app-frontend              # Working directory inside the container
+      - 4200:4200
+    working_dir: /app-frontend
     depends_on:
-      backend:
-        condition: service_healthy         # Wait for backend service to be healthy
+      - backend
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:4200   # Set environment variable for frontend
+      - NEXT_PUBLIC_API_URL=http://localhost:9000  # Modifier le port pour correspondre au backend
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3000"]   # Health check command
-      timeout: 10s                              # Health check timeout
-      retries: 5                                # Number of health check retries
+      test: ["CMD", "lsof", "-t", "-i:4200"]
+      timeout: 10s
+      retries: 5
 
   # Backend service configuration
   backend:
     container_name: ng_backend
-    build: ./Backend                         # Path to backend Dockerfile
+    build: ./Backend
     ports:
-      - 9000:9000                           # Map host port 3001 to container port 3001
-    platform: linux/x86_64                  # Platform specification
-    working_dir: /app-backend               # Working directory inside the container
-    depends_on:
-      db:
-        condition: service_healthy         # Wait for database service to be healthy
+      - 9000:9000
+    working_dir: /app-backend
     environment:
-      - APP_PORT=3001
+      - APP_PORT=9000
       - JWT_SECRET=jwt_secret
       - MONGODB_URI=mongodb+srv://root:root@cluster0.bdozs6y.mongodb.net/pfa?retryWrites=true&w=majority
-                      # Set environment variables for backend
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3001"]   # Health check command
-      timeout: 10s                              # Health check timeout
-      retries: 5                                # Number of health check retries
-
-  # Database service (not present in provided file)
-  # Add database service configuration if applicable
+      test: ["CMD", "lsof", "-t", "-i:9000"]
+      timeout: 10s
+      retries: 5
