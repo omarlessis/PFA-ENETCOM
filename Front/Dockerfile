@@ -19,7 +19,8 @@ RUN echo "{\"scripts\":{\"build\":\"ng build\"}}" > package.json
 # Étape 7 : Construire l'application Angular
 RUN npm run build --force
 
-
+# Étape 9 : Exposer le port 4200
+EXPOSE 4200
 
 CMD ["npm", "run", "start"]
 
