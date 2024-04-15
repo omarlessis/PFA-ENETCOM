@@ -21,3 +21,5 @@ RUN npm run build --force
 
 
 
+CMD ["npm", "run", "start"]
+
