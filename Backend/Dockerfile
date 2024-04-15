@@ -5,7 +5,7 @@ FROM node:14
 WORKDIR /app-backend
 
 # Copy package.json and package-lock.json to container
-COPY . .
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expose the port your app runs on
-EXPOSE 3000
+EXPOSE 9000
 
 # Command to run the application
 CMD ["npm", "start"]
