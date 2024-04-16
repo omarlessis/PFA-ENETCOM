@@ -55,7 +55,7 @@ app.get('/chat',function(req,res){
 
 app.use(function(req, res, next) {
   res.setHeader('Content-type', 'text/html');
-  res.status(404).send('Page introuvable !');
+  res.status(404).send('Triggered successful !');
 });
 
 
