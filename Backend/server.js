@@ -25,10 +25,10 @@ mongoose.connect('mongodb+srv://root:root@cluster0.bdozs6y.mongodb.net/pfa?retry
   server.listen(9000, () => {
     console.log('Server started on port 9000');
   });
-  console.log('Database connection successful');
+  console.log('Database connection successful ');
 })
 .catch((error) => {
-  console.log('Database connection error: ' + error);
+  console.log('Version 2 Database connection error: ' + error);
 });
 
 io.on('connection', (socket) => {
