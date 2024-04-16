@@ -2,7 +2,7 @@
 FROM node:14 as builder
 
 # Étape 2 : Définir le répertoire de travail dans le conteneur
-WORKDIR /app
+WORKDIR /app-frontend
 
 # Étape 3 : Copier les fichiers package.json et package-lock.json
 COPY package*.json ./
