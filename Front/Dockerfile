@@ -13,14 +13,8 @@ RUN npm install --force
 # Étape 5 : Copier le reste des fichiers de l'application
 COPY . .
 
-# Étape 6 : Définir le script de build dans le package.json
-RUN echo "{\"scripts\":{\"build\":\"ng build\"}}" > package.json
-
-# Étape 7 : Construire l'application Angular
-RUN npm run build --force
-
-# Étape 9 : Exposer le port 4200
+# Étape 6 : Exposer le port 4200
 EXPOSE 4200
 
+# Étape 7 : Commande par défaut pour démarrer l'application
 CMD ["npm", "run", "start"]
-
