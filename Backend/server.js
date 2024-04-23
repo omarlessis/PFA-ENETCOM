@@ -25,7 +25,7 @@ mongoose.connect('mongodb+srv://root:root@cluster0.bdozs6y.mongodb.net/pfa?retry
   server.listen(9000, () => {
     console.log('Server started on port 9000');
   });
-  console.log('Database connection!!!!!!!!!!!!!!!!!jhhhhhhhh!!!!.......!!!!');
+  console.log('Database connection!!!!!!!!!!!Latest Test...............');
 })
 .catch((error) => {
   console.log('Version 2 Database connection error: ' + error);
@@ -55,7 +55,7 @@ app.get('/chat',function(req,res){
 
 app.use(function(req, res, next) {
   res.setHeader('Content-type', 'text/html');
-  res.status(404).send('Triggered ................................. ');
+  res.status(404).send('Test............................................');
 });
 
 
